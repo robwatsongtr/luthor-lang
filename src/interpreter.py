@@ -1,6 +1,6 @@
 import operator
-from tokens import TokenType
-from nodes import NumberNode
+from .tokens import TokenType
+from .nodes import NumberNode
 
 
 class Interpreter:
@@ -14,13 +14,16 @@ class Interpreter:
         TokenType.DIVIDE: operator.truediv
     }
 
-    def evaluate(self):
-        # leaf will always be a number node so its our base case check 
-        if isinstance(self.root, NumberNode):
-            return self.root.number 
-        
-        left = self.evaluate(self.root.left)
-        right = self.evaluate(self.root.right)
+    def evaluate(self, node=None):
+        if node is None:
+            node = self.root
+
+        # leaf will always be a number node so its our base case check
+        if isinstance(node, NumberNode):
+            return node.number
+
+        left = self.evaluate(node.left)
+        right = self.evaluate(node.right)
 
         # the call stack unwinding does the operations
-        return self.op_map[self.root.op_type.token_type](left, right)
+        return self.op_map[node.op_type.token_type](left, right)

@@ -1,6 +1,6 @@
 import operator
-from tokens import TokenType
-from nodes import BinaryOpNode, NumberNode
+from .tokens import TokenType
+from .nodes import BinaryOpNode, NumberNode
 
 
 class Parser:
