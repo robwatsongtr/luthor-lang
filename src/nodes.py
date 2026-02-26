@@ -4,7 +4,13 @@ class BinaryOpNode:
         self.left = left
         self.right = right
 
+    def __repr__(self):
+        return f"BinaryOp({self.op_type.lexeme}, {self.left}, {self.right})"
+
 
 class NumberNode:
     def __init__(self, number=0):
-        self.number = number 
+        self.number = number
+
+    def __repr__(self):
+        return f"Num({self.number})"
