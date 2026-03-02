@@ -90,9 +90,23 @@ class Lexer:
                 tokens.append(token)
                 self.advance()
 
-            # Words, ie keywords or identifiers 
+            # Words: keywords or identifiers 
+            elif self.peek().isalpha():
+                word = ''
 
+                while self.peek() is not None and (
+                    self.peek().isalnum() or self.peek() == '_'
+                ):
+                    word += self.peek()
+                    self.advance()
 
+                if word in self.keyword_map:
+                    keyword_t = self.keyword_map.get(word)
+                    token = Token(word, keyword_t)
+                else:
+                    token = Token(word, TokenType.IDENTIFIER)
+            
+                tokens.append(token)
 
             # handle numbers 
             elif self.peek().isdigit():

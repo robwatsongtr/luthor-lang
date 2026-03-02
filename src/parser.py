@@ -28,7 +28,7 @@ class Parser:
                 f"Unexpected token '{token.token_type}' at {self.tok_pos}"
             )
 
-    # ------------ Build the Parse Tree ------------
+    # ------------ Build the Parse Tree, Recursive Descent ------------
 
     """
     expression → term
@@ -44,7 +44,7 @@ class Parser:
 
     def term(self):
         root = self.factor()
-
+ 
         while self.token_peek() and (
             self.token_peek().token_type in (TokenType.PLUS, TokenType.MINUS)
         ):
