@@ -8,13 +8,6 @@ class Parser:
         self.tok_stream = token_stream
         self.tok_pos = 0
 
-    op_map = {
-        TokenType.PLUS: operator.add,
-        TokenType.MINUS: operator.sub,
-        TokenType.MULTIPLY: operator.mul,
-        TokenType.DIVIDE: operator.truediv
-    }
-
     def advance(self):
         self.tok_pos += 1
 

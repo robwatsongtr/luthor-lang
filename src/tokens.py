@@ -1,14 +1,33 @@
 from enum import Enum, auto
 
 class TokenType(Enum):
-    NUMBER = auto()
+    # single char symbols 
     PLUS = auto()
     MINUS = auto()
     MULTIPLY = auto()
     DIVIDE = auto()
     L_PARENS = auto()
     R_PARENS = auto()
+    LESS_THAN = auto()
+    GREATER_THAN = auto()
+    
+    # multi char symbols
+    LESS_THAN_EQUAL = auto() # <= 
+    GREATER_THAN_EQUAL = auto() # >=
+    EQUAL_TO = auto() # ==
+    NOT_EQUAL = auto() # != 
+
+    # value carrying tokens 
+    NUMBER = auto()
+    IDENTIFIER = auto()
+
+    # keywords 
+    KNOW = auto() # assignment
+    SUPPOSE = auto()  # if
+    OTHERWISE = auto()  # else
+
     EOF = auto()
+
 
 
 class Token:

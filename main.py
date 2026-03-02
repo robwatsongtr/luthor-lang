@@ -1,4 +1,4 @@
-from src.lex_luthor import Lexer
+from src.lexer import Lexer
 from src.parser import Parser
 from src.interpreter import Interpreter
 
