@@ -25,6 +25,7 @@ class TokenType(Enum):
     KNOW = auto() # assignment
     SUPPOSE = auto()  # if
     OTHERWISE = auto()  # else
+    END = auto() # block delimiter
 
     EOF = auto()
 

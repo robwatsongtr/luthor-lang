@@ -22,7 +22,8 @@ class Lexer:
     keyword_map = {
         'know' : TokenType.KNOW,
         'suppose' : TokenType.SUPPOSE,
-        'otherwise' : TokenType.OTHERWISE
+        'otherwise' : TokenType.OTHERWISE,
+        'end' : TokenType.END
     }
 
     def advance(self):
