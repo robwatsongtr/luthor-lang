@@ -14,3 +14,17 @@ class NumberNode:
 
     def __repr__(self):
         return f"Num({self.number})"
+    
+ 
+class IdentifierNode:
+    def __init__(self, identifier=''):
+        self.identifier = identifier
+
+    def __repr__(self):
+        return f"Identifier({self.identifier})"
+    
+
+class AssignNode:
+    def __init__(self, var_name='', expression=None):
+        self.var_name = var_name
+        self.expression = expression 

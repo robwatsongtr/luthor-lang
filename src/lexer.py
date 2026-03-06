@@ -23,7 +23,8 @@ class Lexer:
         'know' : TokenType.KNOW,
         'suppose' : TokenType.SUPPOSE,
         'otherwise' : TokenType.OTHERWISE,
-        'end' : TokenType.END
+        'end' : TokenType.END,
+        'doom' : TokenType.DOOM
     }
 
     def advance(self):

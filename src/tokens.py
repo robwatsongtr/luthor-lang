@@ -26,6 +26,7 @@ class TokenType(Enum):
     SUPPOSE = auto()  # if
     OTHERWISE = auto()  # else
     END = auto() # block delimiter
+    DOOM = auto() # print 
 
     EOF = auto()
 

@@ -1,12 +1,22 @@
 import operator
 from .tokens import TokenType
-from .nodes import BinaryOpNode, NumberNode
+from .nodes import BinaryOpNode, NumberNode, IdentifierNode
+
 
 
 class Parser:
     def __init__(self, token_stream):
         self.tok_stream = token_stream
         self.tok_pos = 0
+
+    comparison_tokens = [
+        TokenType.LESS_THAN, 
+        TokenType.GREATER_THAN, 
+        TokenType.LESS_THAN_EQUAL, 
+        TokenType.GREATER_THAN_EQUAL, 
+        TokenType.EQUAL_TO, 
+        TokenType.NOT_EQUAL
+    ]
 
     def advance(self):
         self.tok_pos += 1
@@ -16,6 +26,8 @@ class Parser:
 
         return token if token.token_type != TokenType.EOF else None 
 
+    # expected token is the check to make sure the token being consumed
+    # makes syntactical sense 
     def consume(self, expected_token):
         token = self.token_peek()
 
@@ -30,17 +42,26 @@ class Parser:
 
     # ------------ Build the Parse Tree, Recursive Descent ------------
 
-    """
-    expression → term
-        term       → factor (('+' | '-') factor)*
-        factor     → primary (('*' | '/') primary)*
-        primary    → NUMBER | '(' expression ')'    
-    """
+    # not part of precedence chain.
+    def assignment(self):
+        if self.token_peek().token_type == TokenType.KNOW:
+            pass
 
     def expression(self):
-        root = self.term()
+        root = self.comparison()
 
         return root  
+    
+    def comparison(self):
+        root = self.term()
+
+        while self.token_peek() and self.token_peek().token_type in self.comparison_tokens:
+            comp = self.token_peek()
+            self.consume(comp.token_type)
+            r_node = self.term()
+            root = BinaryOpNode(comp, root, r_node)
+
+        return root 
 
     def term(self):
         root = self.factor()
@@ -72,10 +93,17 @@ class Parser:
 
     def primary(self):
         if self.token_peek().token_type == TokenType.NUMBER:
-            num = self.token_peek()
+            num = self.token_peek() # returns a token object 
             self.consume(num.token_type)
 
             return NumberNode(float(num.lexeme))
+        
+        elif self.token_peek().token_type == TokenType.IDENTIFIER:
+            identifier = self.token_peek() # returns a token object 
+            self.consume(identifier.token_type)
+
+            return IdentifierNode(identifier.lexeme)
+
         else:
             # handle parens, creating a nested parse of everything inside them
             if self.token_peek().token_type == TokenType.L_PARENS:
