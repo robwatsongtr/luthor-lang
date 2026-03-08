@@ -25,6 +25,10 @@ class IdentifierNode:
     
 
 class AssignNode:
-    def __init__(self, var_name='', expression=None):
+    def __init__(self, var_name='', expression=''):
         self.var_name = var_name
         self.expression = expression 
+
+class BlockNode:
+    def __init__(self, statements):
+        self.statements = statements

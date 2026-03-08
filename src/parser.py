@@ -1,8 +1,5 @@
-import operator
 from .tokens import TokenType
-from .nodes import BinaryOpNode, NumberNode, IdentifierNode
-
-
+from .nodes import BinaryOpNode, NumberNode, IdentifierNode, AssignNode
 
 class Parser:
     def __init__(self, token_stream):
@@ -26,8 +23,6 @@ class Parser:
 
         return token if token.token_type != TokenType.EOF else None 
 
-    # expected token is the check to make sure the token being consumed
-    # makes syntactical sense 
     def consume(self, expected_token):
         token = self.token_peek()
 
@@ -44,8 +39,13 @@ class Parser:
 
     # not part of precedence chain.
     def assignment(self):
-        if self.token_peek().token_type == TokenType.KNOW:
-            pass
+        # we know what's coming so no need to peek before consuming
+        self.consume(TokenType.KNOW)
+        var_name = self.consume(TokenType.IDENTIFIER).lexeme 
+        expr = self.expression()
+        root = AssignNode(var_name, expr)
+
+        return root 
 
     def expression(self):
         root = self.comparison()
@@ -56,8 +56,8 @@ class Parser:
         root = self.term()
 
         while self.token_peek() and self.token_peek().token_type in self.comparison_tokens:
-            comp = self.token_peek()
-            self.consume(comp.token_type)
+            comp = self.token_peek() # need to check what the token is first, peek at it)
+            self.consume(comp.token_type) # does validation, grabs, and advances
             r_node = self.term()
             root = BinaryOpNode(comp, root, r_node)
 
@@ -70,7 +70,7 @@ class Parser:
             self.token_peek().token_type in (TokenType.PLUS, TokenType.MINUS)
         ):
             op = self.token_peek()
-            self.consume(op.token_type) # does validation and advances
+            self.consume(op.token_type) 
             r_node = self.factor()
             root = BinaryOpNode(op, root, r_node)
 
