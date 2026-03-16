@@ -1,5 +1,14 @@
 from .tokens import TokenType
-from .nodes import BinaryOpNode, NumberNode, IdentifierNode, AssignNode
+from .nodes import ( 
+    BinaryOpNode, 
+    NumberNode, 
+    IdentifierNode, 
+    AssignNode,
+    BlockNode,
+    ConditionalNode,
+    PrintNode,
+    ProgramNode
+)
 
 class Parser:
     def __init__(self, token_stream):
@@ -24,7 +33,13 @@ class Parser:
         return token if token.token_type != TokenType.EOF else None 
 
     def consume(self, expected_token):
-        token = self.token_peek()
+        # safe for caller if you don't check for none in caller's method 
+        if self.token_peek() is None:
+            raise ValueError(
+                f"Unexpected end of input at {self.tok_pos}"
+            )
+
+        token = self.token_peek() 
 
         if token.token_type == expected_token:
             self.advance()
@@ -35,9 +50,38 @@ class Parser:
                 f"Unexpected token '{token.token_type}' at {self.tok_pos}"
             )
 
-    # ------------ Build the Parse Tree, Recursive Descent ------------
+    # ------------- Grammar methods ------------------
 
-    # not part of precedence chain.
+    # entry point 
+    def program(self):
+        statements = []
+
+        while self.token_peek():
+            statement = self.statement()
+            statements.append(statement)
+
+        program = ProgramNode(statements)
+
+        return program 
+    
+    # dispatches on keywords
+    def statement(self):
+        if self.token_peek().token_type == TokenType.KNOW:
+            result = self.assignment()
+            return result
+        
+        elif self.token_peek().token_type == TokenType.SUPPOSE:
+            result = self.conditional()
+            return result
+        
+        elif self.token_peek().token_type == TokenType.DOOM:
+            result = self.print_statement()
+            return result 
+        
+        else:
+            result = self.expression()
+            return result 
+        
     def assignment(self):
         # we know what's coming so no need to peek before consuming
         self.consume(TokenType.KNOW)
@@ -46,6 +90,42 @@ class Parser:
         root = AssignNode(var_name, expr)
 
         return root 
+    
+    def conditional(self):
+        self.consume(TokenType.SUPPOSE)
+
+        condition = self.expression()
+        then_block = self.block()
+        else_block = None 
+
+        if self.token_peek() and self.token_peek().token_type == TokenType.OTHERWISE:
+            self.consume(TokenType.OTHERWISE)
+            else_block = self.block()
+
+        root = ConditionalNode(condition, then_block, else_block)
+
+        return root 
+
+    def print_statement(self):
+        self.consume(TokenType.DOOM)
+        expression = self.expression()
+
+        root = PrintNode(expression)
+
+        return root 
+
+    def block(self):
+        block = []
+
+        while self.token_peek() and self.token_peek().token_type != TokenType.END:
+            statement = self.statement()
+            block.append(statement)
+
+        self.consume(TokenType.END)
+        root = BlockNode(block)
+
+        return root 
+
 
     def expression(self):
         root = self.comparison()

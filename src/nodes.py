@@ -28,7 +28,25 @@ class AssignNode:
     def __init__(self, var_name='', expression=''):
         self.var_name = var_name
         self.expression = expression 
+        
 
 class BlockNode:
+    def __init__(self, statements):
+        self.statements = statements
+
+
+class ConditionalNode:
+    def __init__(self, condition, then_block, else_block=None):
+        self.condition = condition
+        self.then_block = then_block
+        self.else_block = else_block
+
+
+class PrintNode:
+    def __init__(self, expression):
+        self.expression = expression 
+    
+
+class ProgramNode:
     def __init__(self, statements):
         self.statements = statements
