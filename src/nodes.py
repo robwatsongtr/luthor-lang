@@ -27,12 +27,18 @@ class IdentifierNode:
 class AssignNode:
     def __init__(self, var_name='', expression=''):
         self.var_name = var_name
-        self.expression = expression 
-        
+        self.expression = expression
+
+    def __repr__(self):
+        return f"Assign({self.var_name}, {self.expression})"
+
 
 class BlockNode:
     def __init__(self, statements):
         self.statements = statements
+
+    def __repr__(self):
+        return f"Block({self.statements})"
 
 
 class ConditionalNode:
@@ -41,12 +47,21 @@ class ConditionalNode:
         self.then_block = then_block
         self.else_block = else_block
 
+    def __repr__(self):
+        return f"Conditional({self.condition}, {self.then_block}, {self.else_block})"
+
 
 class PrintNode:
     def __init__(self, expression):
-        self.expression = expression 
-    
+        self.expression = expression
+
+    def __repr__(self):
+        return f"Print({self.expression})"
+
 
 class ProgramNode:
     def __init__(self, statements):
         self.statements = statements
+
+    def __repr__(self):
+      return f"Program({self.statements})"

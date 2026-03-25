@@ -58,7 +58,7 @@ class Lexer:
                 return tokens
             
             # handle whitespace
-            elif self.peek() == ' ':
+            elif self.peek().isspace():
                 self.advance()
 
             # multi character comparison tokens 

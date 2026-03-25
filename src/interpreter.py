@@ -8,7 +8,6 @@ from .nodes import (
     BlockNode,
     ConditionalNode,
     PrintNode,
-    ProgramNode
 )
 
 
@@ -21,7 +20,13 @@ class Interpreter:
         TokenType.PLUS: operator.add,
         TokenType.MINUS: operator.sub,
         TokenType.MULTIPLY: operator.mul,
-        TokenType.DIVIDE: operator.truediv
+        TokenType.DIVIDE: operator.truediv,
+        TokenType.LESS_THAN: operator.lt,
+        TokenType.GREATER_THAN: operator.gt,
+        TokenType.LESS_THAN_EQUAL: operator.le,
+        TokenType.GREATER_THAN_EQUAL: operator.ge,
+        TokenType.EQUAL_TO: operator.eq,
+        TokenType.NOT_EQUAL: operator.ne
     }
 
     def run(self):
@@ -35,6 +40,7 @@ class Interpreter:
         
         elif isinstance(node, IdentifierNode):
             if node.identifier in self.symbol_table:
+
                 return self.symbol_table[node.identifier]
             else:
                 raise ValueError(
@@ -42,9 +48,40 @@ class Interpreter:
                 )
             
         elif isinstance(node, BinaryOpNode):
-            pass
+            left = self.evaluate(node.left)
+            right = self.evaluate(node.right)
 
-    
+            return self.op_map[node.op_type.token_type](left, right)
+        
+        elif isinstance(node, AssignNode):
+            var_name = node.var_name
+            expr_eval = self.evaluate(node.expression)
+
+            self.symbol_table[var_name] = expr_eval
+
+        elif isinstance(node, PrintNode):
+            expr_eval = self.evaluate(node.expression)
+            print(f"> {expr_eval}")
+
+        elif isinstance(node, BlockNode):
+            for statement in node.statements:
+                self.evaluate(statement)
+
+        elif isinstance(node, ConditionalNode):
+            result = self.evaluate(node.condition)
+
+            if result:
+                self.evaluate(node.then_block)
+            else:
+                if node.else_block:
+                    self.evaluate(node.else_block)
+
+        
+
+
+
+
+
 
     # def evaluate(self, node=None):
     #     if node is None:
