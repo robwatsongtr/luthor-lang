@@ -31,7 +31,7 @@ def main():
     print("Step 2: Syntax Analysis (Parsing)")
     parser = Parser(tokens)
     tree = parser.program()
-    print(f"  AST root: {tree}")
+    print(f"root: {tree}")
     print()
 
     print("Step 3: Evaluation (Interpretation)")

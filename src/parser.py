@@ -7,6 +7,7 @@ from .nodes import (
     BlockNode,
     ConditionalNode,
     PrintNode,
+    WhileNode,
     ProgramNode
 )
 
@@ -50,7 +51,7 @@ class Parser:
                 f"Unexpected token '{token.token_type}' at {self.tok_pos}"
             )
 
-    # ------------- Grammar methods ------------------
+    # ------------------------ EBNF methods -----------------------------
 
     # entry point 
     def program(self):
@@ -78,6 +79,10 @@ class Parser:
             result = self.print_statement()
             return result 
         
+        elif self.token_peek().token_type == TokenType.CRIME:
+            result = self.while_statement()
+            return result 
+        
         else:
             result = self.expression()
             return result 
@@ -95,12 +100,13 @@ class Parser:
         self.consume(TokenType.SUPPOSE)
 
         condition = self.expression()
-        then_block = self.block()
+        then_block = self.block() # grab then block first because it has to be there 
         else_block = None 
 
+        # grab the else block if it's there 
         if self.token_peek() and self.token_peek().token_type == TokenType.OTHERWISE:
             self.consume(TokenType.OTHERWISE)
-            else_block = self.block()
+            else_block = self.block() 
 
         root = ConditionalNode(condition, then_block, else_block)
 
@@ -111,6 +117,16 @@ class Parser:
         expression = self.expression()
 
         root = PrintNode(expression)
+
+        return root 
+    
+    def while_statement(self):
+        self.consume(TokenType.CRIME)
+
+        condition = self.expression()
+        body_block = self.block()
+
+        root = WhileNode(condition, body_block)
 
         return root 
 

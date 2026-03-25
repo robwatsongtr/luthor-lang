@@ -81,9 +81,10 @@ The pipeline is: **source string → Lexer → token stream → Parser → AST �
 
 ```
 program              → statement*
-statement            → assignment | conditional | print_statement | expression_statement
+statement            → assignment | conditional | while_statement | print_statement | expression_statement
 assignment           → 'know' IDENTIFIER expression
 conditional          → 'suppose' expression block ('otherwise' block)?
+while_statement      → 'crime' expression block
 print_statement      → 'doom' expression
 block                → statement* 'end'
 expression_statement → expression

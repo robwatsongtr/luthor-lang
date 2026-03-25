@@ -24,10 +24,12 @@ class TokenType(Enum):
     # keywords 
     KNOW = auto() # assignment
     SUPPOSE = auto()  # if
+    DOOM = auto() # print 
+    CRIME = auto() # while 
+
     OTHERWISE = auto()  # else
     END = auto() # block delimiter
-    DOOM = auto() # print 
-
+    
     EOF = auto()
 
 

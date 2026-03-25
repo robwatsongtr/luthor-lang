@@ -24,7 +24,8 @@ class Lexer:
         'suppose' : TokenType.SUPPOSE,
         'otherwise' : TokenType.OTHERWISE,
         'end' : TokenType.END,
-        'doom' : TokenType.DOOM
+        'doom' : TokenType.DOOM,
+        'crime' : TokenType.CRIME
     }
 
     def advance(self):

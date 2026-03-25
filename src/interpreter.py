@@ -7,6 +7,7 @@ from .nodes import (
     AssignNode,
     BlockNode,
     ConditionalNode,
+    WhileNode,
     PrintNode,
 )
 
@@ -67,6 +68,13 @@ class Interpreter:
             for statement in node.statements:
                 self.evaluate(statement)
 
+        elif isinstance(node, WhileNode):
+            condition_eval = self.evaluate(node.condition)
+
+            while condition_eval:
+                self.evaluate(node.body_block)
+                condition_eval = self.evaluate(node.condition)
+            
         elif isinstance(node, ConditionalNode):
             result = self.evaluate(node.condition)
 
@@ -77,22 +85,3 @@ class Interpreter:
                     self.evaluate(node.else_block)
 
         
-
-
-
-
-
-
-    # def evaluate(self, node=None):
-    #     if node is None:
-    #         node = self.program
-
-    #     # leaf will always be a number node so its our base case check
-    #     if isinstance(node, NumberNode):
-    #         return node.number
-
-    #     left = self.evaluate(node.left)
-    #     right = self.evaluate(node.right)
-
-    #     # the call stack unwinding does the operations
-    #     return self.op_map[node.op_type.token_type](left, right)

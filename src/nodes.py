@@ -1,3 +1,4 @@
+
 class BinaryOpNode:
     def __init__(self, op_type=None, left=None, right=None):
         self.op_type = op_type
@@ -49,6 +50,15 @@ class ConditionalNode:
 
     def __repr__(self):
         return f"Conditional({self.condition}, {self.then_block}, {self.else_block})"
+    
+
+class WhileNode:
+    def __init__(self, condition, body_block):
+        self.condition = condition
+        self.body_block = body_block
+
+    def __repr__(self):
+        return f"Condition({self.condition}, {self.body_block})"
 
 
 class PrintNode:
