@@ -7,6 +7,7 @@ from src.interpreter import Interpreter
 def main():
 
     source = """
+
     know x 3
     suppose x > 5
         doom 100
@@ -14,14 +15,25 @@ def main():
     otherwise
         doom 200
     end
+
     """
 
-    print(f"Expression: {source}")
+    source_loop_test = """
+
+    know x 0
+    crime x < 5
+      doom x
+      know x x + 1
+    end
+
+    """
+
+    print(f"Expression: {source_loop_test}")
     print()
 
     print("Step 1: Lexical Analysis (Tokenization)")
     print()
-    lexer = Lexer(source)
+    lexer = Lexer(source_loop_test)
     tokens = lexer.tokenize()
 
     for token in tokens:
