@@ -6,6 +6,20 @@ from src.interpreter import Interpreter
 
 def main():
 
+    quadratic = """
+    know i 0
+    crime i < 1000
+        know j 0
+        crime j < 1000
+            know result i * j
+            know j j + 1
+        end
+        know i i + 1
+    end
+    doom i
+
+    """
+
     source = """
 
     know x 3
@@ -18,7 +32,7 @@ def main():
 
     """
 
-    source_loop_test = """
+    source2 = """
 
     know x 0
     crime x < 5
@@ -28,12 +42,12 @@ def main():
 
     """
 
-    print(f"Expression: {source_loop_test}")
+    print(f"Expression: {quadratic}")
     print()
 
     print("Step 1: Lexical Analysis (Tokenization)")
     print()
-    lexer = Lexer(source_loop_test)
+    lexer = Lexer(quadratic)
     tokens = lexer.tokenize()
 
     for token in tokens:
