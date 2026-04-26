@@ -93,7 +93,8 @@ expression_statement → expression
 expression           → comparison
 comparison           → term (('==' | '!=' | '<' | '>' | '<=' | '>=') term)*
 term                 → factor (('+' | '-') factor)*
-factor               → primary (('*' | '/') primary)*
+factor               → unary (('*' | '/') unary)*
+unary                → '-' unary | primary 
 primary              → NUMBER | IDENTIFIER | '(' expression ')'
 ```
 

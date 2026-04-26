@@ -7,7 +7,16 @@ class BinaryOpNode:
 
     def __repr__(self):
         return f"BinaryOp({self.op_type.lexeme}, {self.left}, {self.right})"
+    
+    
+class UnaryOpNode:
+    def __init__(self, op_type, operand):
+        self.op_type = op_type
+        self.operand = operand 
 
+    def __repr__(self):
+        return f"Unary({self.op_type.lexeme}, {self.operand})"
+    
 
 class NumberNode:
     def __init__(self, number=0):
