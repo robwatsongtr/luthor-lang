@@ -8,7 +8,8 @@ from .nodes import (
     ConditionalNode,
     PrintNode,
     WhileNode,
-    ProgramNode
+    ProgramNode,
+    UnaryOpNode 
 )
 
 class Parser:
@@ -52,8 +53,10 @@ class Parser:
             )
 
     # ------------------------ EBNF methods -----------------------------
+    # --------------------------------------------------------------------
 
-    # entry point 
+    # -------------------------------------------------------------------------
+    # Enter and exit. This is a loop over statements that assembles the 'parse tree'
     def program(self):
         statements = []
 
@@ -65,7 +68,9 @@ class Parser:
 
         return program 
     
-    # dispatches on keywords
+    # ---------------------------------------------------------
+    # THE DISPATCHER, on keywords, or jump to expresison parser
+    # ---------------------------------------------------------
     def statement(self):
         if self.token_peek().token_type == TokenType.KNOW:
             result = self.assignment()
@@ -86,7 +91,11 @@ class Parser:
         else:
             result = self.expression()
             return result 
-        
+     # -------------------------------------------------------------   
+     # ------------------------------------------------------------
+
+
+     # ------------ Statement - level methods --------------------------
     def assignment(self):
         # we know what's coming so no need to peek before consuming
         self.consume(TokenType.KNOW)
@@ -141,20 +150,22 @@ class Parser:
         root = BlockNode(block)
 
         return root 
-
-
+    # --------------------------------------------------------------------------
+    
+    
+    # --------------------- Expressison Parser: Compute values-------------------
     def expression(self):
         root = self.comparison()
 
         return root  
     
     def comparison(self):
-        root = self.term()
+        root = self.term() # grab left side 
 
         while self.token_peek() and self.token_peek().token_type in self.comparison_tokens:
             comp = self.token_peek() # need to check what the token is first, peek at it)
             self.consume(comp.token_type) # does validation, grabs, and advances
-            r_node = self.term()
+            r_node = self.term() # grab right side 
             root = BinaryOpNode(comp, root, r_node)
 
         return root 
@@ -174,18 +185,30 @@ class Parser:
 
         
     def factor(self):
-        root = self.primary()
+        root = self.unary()
 
         while self.token_peek() and (
             self.token_peek().token_type in (TokenType.MULTIPLY, TokenType.DIVIDE)
         ):
             op = self.token_peek()
             self.consume(op.token_type) 
-            r_node = self.primary()
+            r_node = self.unary()
             root = BinaryOpNode(op, root, r_node)
 
         return root 
+    
+    
+    def unary(self):
+        if self.token_peek() and self.token_peek().token_type == TokenType.MINUS:
+            op = self.token_peek()
+            self.consume(op.token_type)
+            operand = self.primary()
+            root = UnaryOpNode(op, operand)
 
+        else:
+            root = self.primary()
+
+        return root 
 
     def primary(self):
         if self.token_peek().token_type == TokenType.NUMBER:

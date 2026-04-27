@@ -81,6 +81,10 @@ The pipeline is: **source string → Lexer → token stream → Parser → AST �
 
 ## Current EBNF
 
+ - '?' zero or one (optional)
+ - '*' zero or more
+ - '+' one or more
+
 ```
 program              → statement*
 statement            → assignment | conditional | while_statement | print_statement | expression_statement
@@ -94,7 +98,7 @@ expression           → comparison
 comparison           → term (('==' | '!=' | '<' | '>' | '<=' | '>=') term)*
 term                 → factor (('+' | '-') factor)*
 factor               → unary (('*' | '/') unary)*
-unary                → '-' unary | primary 
+unary                → ('-')? primary 
 primary              → NUMBER | IDENTIFIER | '(' expression ')'
 ```
 
