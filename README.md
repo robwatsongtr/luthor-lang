@@ -8,6 +8,7 @@ A simple, Turing-complete interpreted programming language with Lex Luthor-theme
 
 - **Variables** — `know x 10`
 - **Arithmetic** — `+`, `-`, `*`, `/` with proper precedence
+- **Unary negation** — `-x`, `-5`, `-(expr)`
 - **Comparisons** — `<`, `>`, `<=`, `>=`, `==`, `!=`
 - **Conditionals** — `suppose`/`otherwise`/`end`
 - **Loops** — `crime` (while loops)
@@ -34,6 +35,14 @@ know y 5
 doom x + y * 2
 ```
 Output: `> 20.0`
+
+### Unary Negation
+```
+know x 5
+doom -x
+doom -(x + 3)
+```
+Output: `> -5.0` `> -8.0`
 
 ### Conditionals
 ```
@@ -69,6 +78,7 @@ Output: `> 0.0` `> 1.0` `> 2.0` `> 3.0` `> 4.0`
 
 ### Operators
 - Arithmetic: `+`, `-`, `*`, `/`
+- Unary: `-` (negation)
 - Comparison: `<`, `>`, `<=`, `>=`, `==`, `!=`
 - Grouping: `(`, `)`
 
