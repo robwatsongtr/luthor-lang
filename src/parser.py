@@ -52,10 +52,11 @@ class Parser:
                 f"Unexpected token '{token.token_type}' at {self.tok_pos}"
             )
 
-    # ------------------------ EBNF methods -----------------------------
+    # ------------------------ Grammar methods -----------------------------
     # --------------------------------------------------------------------
+    # (the grammar is the validaion logic)
 
-    # -------------------------------------------------------------------------
+
     # Enter and exit. This is a loop over statements that assembles the 'parse tree'
     def program(self):
         statements = []
@@ -69,7 +70,7 @@ class Parser:
         return program 
     
     # ---------------------------------------------------------
-    # THE DISPATCHER, on keywords, or jump to expresison parser
+    # THE DISPATCHER, on keywords, or to expresison parser
     # ---------------------------------------------------------
     def statement(self):
         if self.token_peek().token_type == TokenType.KNOW:
@@ -95,7 +96,7 @@ class Parser:
      # ------------------------------------------------------------
 
 
-     # ------------ Statement - level methods --------------------------
+     # ------------ Statement level methods: structure --------------------------
     def assignment(self):
         # we know what's coming so no need to peek before consuming
         self.consume(TokenType.KNOW)
@@ -150,7 +151,6 @@ class Parser:
         root = BlockNode(block)
 
         return root 
-    # --------------------------------------------------------------------------
     
     
     # --------------------- Expressison Parser: Compute values-------------------
@@ -182,8 +182,7 @@ class Parser:
             root = BinaryOpNode(op, root, r_node)
 
         return root 
-
-        
+   
     def factor(self):
         root = self.unary()
 

@@ -9,15 +9,15 @@ from .nodes import (
     ConditionalNode,
     WhileNode,
     PrintNode,
+    UnaryOpNode
 )
-
 
 class Interpreter:
     def __init__(self, program):
         self.program = program
         self.symbol_table = {}
 
-    op_map = {
+    binary_op_map = {
         TokenType.PLUS: operator.add,
         TokenType.MINUS: operator.sub,
         TokenType.MULTIPLY: operator.mul,
@@ -28,6 +28,10 @@ class Interpreter:
         TokenType.GREATER_THAN_EQUAL: operator.ge,
         TokenType.EQUAL_TO: operator.eq,
         TokenType.NOT_EQUAL: operator.ne
+    }
+
+    unary_op_map = {
+        TokenType.MINUS: operator.neg
     }
 
     def run(self):
@@ -52,7 +56,12 @@ class Interpreter:
             left = self.evaluate(node.left)
             right = self.evaluate(node.right)
 
-            return self.op_map[node.op_type.token_type](left, right)
+            return self.binary_op_map[node.op_type.token_type](left, right)
+        
+        elif isinstance(node, UnaryOpNode):
+            operand = self.evaluate(node.operand)
+
+            return self.unary_op_map[node.op_type.token_type](operand)
         
         elif isinstance(node, AssignNode):
             var_name = node.var_name

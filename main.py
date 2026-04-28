@@ -42,12 +42,26 @@ def main():
 
     """
 
-    print(f"Expression: {quadratic}")
+    source3 = """
+
+    know x -10
+    doom x
+
+    doom -5
+
+    doom -(3 + 2)
+
+    know y 20
+    doom y + -5 
+
+    """
+
+    print(f"Program: {source3}")
     print()
 
     print("Step 1: Lexical Analysis (Tokenization)")
     print()
-    lexer = Lexer(quadratic)
+    lexer = Lexer(source3)
     tokens = lexer.tokenize()
 
     for token in tokens:
