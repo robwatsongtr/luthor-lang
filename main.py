@@ -7,6 +7,7 @@ from src.interpreter import Interpreter
 def main():
 
     quadratic = """
+    
     know i 0
     crime i < 1000
         know j 0
