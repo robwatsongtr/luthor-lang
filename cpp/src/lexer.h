@@ -1,0 +1,30 @@
+#pragma once 
+#include "tokens.h"
+
+#include <optional>
+#include <unordered_map>
+#include <string>
+#include <vector>
+
+
+class Lexer {
+public:
+    // constructor definition 
+    Lexer(std::string stream);
+
+    // class returns a vector of tokens 
+    std::vector<Token> tokenize();
+
+private:
+    int pos;
+    std::string stream;
+
+    static const std::unordered_map<std::string, TokenType> single_char_map;
+    static const std::vector<std::string> multi_start; 
+    static const std::unordered_map<std::string, TokenType> keyword_map;
+
+    void advance();
+    void advance_twice();
+    std::optional<char> peek();
+    std::optional<char> peek_next();   
+};
