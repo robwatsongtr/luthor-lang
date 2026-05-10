@@ -10,18 +10,18 @@
 
 Lexer::Lexer(std::string stream) : stream(stream), pos(0) {}
 
-const std::unordered_map<std::string, TokenType> Lexer::single_char_map = {
-    { "+", TokenType::PLUS },
-    { "-", TokenType::MINUS },
-    { "*", TokenType::MULTIPLY },
-    { "/", TokenType::DIVIDE },
-    { "(", TokenType::L_PARENS },
-    { ")", TokenType::R_PARENS },
-    { ">", TokenType::GREATER_THAN },
-    { "<", TokenType::LESS_THAN }
+const std::unordered_map<char, TokenType> Lexer::single_char_map = {
+    { '+', TokenType::PLUS },
+    { '-', TokenType::MINUS },
+    { '*', TokenType::MULTIPLY },
+    { '/', TokenType::DIVIDE },
+    { '(', TokenType::L_PARENS },
+    { ')', TokenType::R_PARENS },
+    { '>', TokenType::GREATER_THAN },
+    { '<', TokenType::LESS_THAN }
 };
 
-const std::vector<std::string> Lexer::multi_start = { "<", ">", "=", "!" };
+const std::vector<char> Lexer::multi_start = { '<', '>', '=', '!' };
 
 const std::unordered_map<std::string, TokenType> Lexer::keyword_map = {
     { "know", TokenType::KNOW },
@@ -74,13 +74,31 @@ std::vector<Token> Lexer::tokenize() {
         } else if (is_space(peek().value())) {
             advance(); 
 
-        } else if (contains(multi_start, peek().value()) && peek_next().value() == '=') {
+        } else if (contains(multi_start, peek().value())
+                    && peek_next().value_or('\0') == '=') {
+
             if (peek().value() == '<') {
                 std::string lexeme = "<=";
                 Token token{ lexeme, TokenType::LESS_THAN_EQUAL };
                 tokens.push_back(token);
                 advance_twice();
-            }    
+            } else if (peek().value() == '>') {
+                std::string lexeme = ">=";
+                Token token{ lexeme, TokenType::GREATER_THAN_EQUAL };
+                tokens.push_back(token);
+                advance_twice();
+            } else if (peek().value() == '=') {
+                std::string lexeme = "==";
+                Token token{ lexeme, TokenType::EQUAL_TO };
+                tokens.push_back(token);
+                advance_twice();
+            } else if (peek().value() == '!') {
+                std::string lexeme = "!=";
+                Token token{ lexeme, TokenType::NOT_EQUAL };
+                tokens.push_back(token);
+                advance_twice();
+            }
+
         }
 
 
