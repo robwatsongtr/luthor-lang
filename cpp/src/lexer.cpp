@@ -60,5 +60,15 @@ std::vector<Token> Lexer::tokenize() {
 
     while (true) {
 
+        if (!peek()) {
+            Token token{ "", TokenType::END_OF_FILE }; 
+            tokens.push_back(token);
+            
+            return tokens;
+        }
+
+
+
+
     }
 }
