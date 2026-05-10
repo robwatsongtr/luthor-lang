@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <cctype>
 
 Lexer::Lexer(std::string stream) : stream(stream), pos(0) {}
 
@@ -39,6 +40,11 @@ void Lexer::advance_twice() {
     pos += 2; 
 }
 
+// helper func to wrap cast for std::isspace because char can be signed
+bool Lexer::is_space(char c) {
+    return std::isspace(static_cast<unsigned char>(c));
+}
+
 std::optional<char> Lexer::peek() {
     if (pos < stream.size()) {
         return stream[pos];
@@ -59,12 +65,22 @@ std::vector<Token> Lexer::tokenize() {
     std::vector<Token> tokens;
 
     while (true) {
-
         if (!peek()) {
             Token token{ "", TokenType::END_OF_FILE }; 
             tokens.push_back(token);
-            
+            // we're done!
             return tokens;
+
+        } else if (is_space(peek().value())) {
+            advance(); 
+
+        } else if (contains(multi_start, peek().value()) && peek_next().value() == '=') {
+            if (peek().value() == '<') {
+                std::string lexeme = "<=";
+                Token token{ lexeme, TokenType::LESS_THAN_EQUAL };
+                tokens.push_back(token);
+                advance_twice();
+            }    
         }
 
 
@@ -72,3 +88,7 @@ std::vector<Token> Lexer::tokenize() {
 
     }
 }
+
+
+// std::find(multi_start.begin(), multi_start.end(), peek().value()) != multi_start.end() 
+// && peek_next().value() == '='
