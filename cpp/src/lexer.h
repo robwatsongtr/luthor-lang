@@ -25,8 +25,7 @@ private:
 
     void advance();
     void advance_twice();
-    bool is_space(char c); // helper func to wrap ugly cast for std::isspace
-
+    
     // helper templated class to check if something is in a sequence container 
     template<typename Container, typename T>
         bool contains(const Container& c, const T& value) {
