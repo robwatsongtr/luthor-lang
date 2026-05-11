@@ -7,6 +7,7 @@
 #include <vector>
 #include <stdexcept>
 #include <cctype>
+#include <sstream>
 
 Lexer::Lexer(std::string stream) : stream(stream), pos(0) {}
 
@@ -57,11 +58,11 @@ std::optional<char> Lexer::peek_next() {
 }
 
 std::vector<Token> Lexer::tokenize() {
+
     std::vector<Token> tokens;
 
     while (true) {
         if (!peek()) {
-
             Token token{ "", TokenType::END_OF_FILE }; 
             tokens.push_back(token);
             // we're done!
@@ -70,7 +71,7 @@ std::vector<Token> Lexer::tokenize() {
         } else if (std::isspace(static_cast<unsigned char>(peek().value()))) {
             advance(); 
 
-        } else if ( contains(multi_start, peek().value())
+        } else if (contains(multi_start, peek().value())
                     && peek_next().value_or('\0') == '=') {
 
             if (peek().value() == '<') {
@@ -96,22 +97,21 @@ std::vector<Token> Lexer::tokenize() {
             }
 
         } else if ( auto it = single_char_map.find(peek().value()); 
-                    it != single_char_map.end()) {
+                    it != single_char_map.end() ) {
 
             auto t_type = it->second;
             auto lexeme = std::string(1, peek().value());
             Token token{ lexeme, t_type };
             tokens.push_back(token);
             advance();
-
+            
         } else if (isalpha(static_cast<unsigned char>(peek().value()))) {
-
             std::string word;
            
             while ( peek().has_value() 
                     && (isalnum(static_cast<unsigned char>(peek().value())) 
-                    || peek().value() == '_')
-                ) {
+                    || peek().value() == '_') ) 
+                {
                     word += peek().value();
                     advance();
                 }
@@ -125,14 +125,27 @@ std::vector<Token> Lexer::tokenize() {
                 tokens.push_back(token);
             }
     
+        } else if (isdigit(static_cast<unsigned char>(peek().value()))) {
+            std::string digits;
+
+            while ( peek().has_value() 
+                    && isdigit(static_cast<unsigned char>(peek().value())) )  
+                {
+                    digits += peek().value();
+                    advance();
+                }          
+
+            Token token{ digits, TokenType::NUMBER};
+            tokens.push_back(token);
+
+        } else {
+            std::ostringstream oss;
+            oss << "Unexpected characters starting with " << peek().value() 
+                << " at " << pos;
+            throw std::invalid_argument(oss.str());
+
         }
-
-
-
 
     }
 }
 
-
-// std::find(multi_start.begin(), multi_start.end(), peek().value()) != multi_start.end() 
-// && peek_next().value() == '='
