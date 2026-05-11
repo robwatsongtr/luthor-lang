@@ -40,11 +40,6 @@ void Lexer::advance_twice() {
     pos += 2; 
 }
 
-// helper func to wrap cast for std::isspace because char can be signed
-bool Lexer::is_space(char c) {
-    return std::isspace(static_cast<unsigned char>(c));
-}
-
 std::optional<char> Lexer::peek() {
     if (pos < stream.size()) {
         return stream[pos];
@@ -66,15 +61,16 @@ std::vector<Token> Lexer::tokenize() {
 
     while (true) {
         if (!peek()) {
+
             Token token{ "", TokenType::END_OF_FILE }; 
             tokens.push_back(token);
             // we're done!
             return tokens;
 
-        } else if (is_space(peek().value())) {
+        } else if (std::isspace(static_cast<unsigned char>(peek().value()))) {
             advance(); 
 
-        } else if (contains(multi_start, peek().value())
+        } else if ( contains(multi_start, peek().value())
                     && peek_next().value_or('\0') == '=') {
 
             if (peek().value() == '<') {
@@ -99,6 +95,36 @@ std::vector<Token> Lexer::tokenize() {
                 advance_twice();
             }
 
+        } else if ( auto it = single_char_map.find(peek().value()); 
+                    it != single_char_map.end()) {
+
+            auto t_type = it->second;
+            auto lexeme = std::string(1, peek().value());
+            Token token{ lexeme, t_type };
+            tokens.push_back(token);
+            advance();
+
+        } else if (isalpha(static_cast<unsigned char>(peek().value()))) {
+
+            std::string word;
+           
+            while ( peek().has_value() 
+                    && (isalnum(static_cast<unsigned char>(peek().value())) 
+                    || peek().value() == '_')
+                ) {
+                    word += peek().value();
+                    advance();
+                }
+
+            if (auto it = keyword_map.find(word); it != keyword_map.end()) {
+                auto keyword_t = it->second; 
+                Token token{ word, keyword_t}; 
+                tokens.push_back(token);
+            } else {
+                Token token{ word, TokenType::IDENTIFIER };
+                tokens.push_back(token);
+            }
+    
         }
 
 
