@@ -58,7 +58,6 @@ std::optional<char> Lexer::peek_next() {
 }
 
 std::vector<Token> Lexer::tokenize() {
-
     std::vector<Token> tokens;
 
     while (true) {
@@ -118,7 +117,7 @@ std::vector<Token> Lexer::tokenize() {
 
             if (auto it = keyword_map.find(word); it != keyword_map.end()) {
                 auto keyword_t = it->second; 
-                Token token{ word, keyword_t}; 
+                Token token{ word, keyword_t }; 
                 tokens.push_back(token);
             } else {
                 Token token{ word, TokenType::IDENTIFIER };
@@ -135,7 +134,7 @@ std::vector<Token> Lexer::tokenize() {
                     advance();
                 }          
 
-            Token token{ digits, TokenType::NUMBER};
+            Token token{ digits, TokenType::NUMBER };
             tokens.push_back(token);
 
         } else {
@@ -145,7 +144,5 @@ std::vector<Token> Lexer::tokenize() {
             throw std::invalid_argument(oss.str());
 
         }
-
     }
 }
-
