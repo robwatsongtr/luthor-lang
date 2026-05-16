@@ -67,7 +67,7 @@ class WhileNode:
         self.body_block = body_block
 
     def __repr__(self):
-        return f"Condition({self.condition}, {self.body_block})"
+        return f"While({self.condition}, {self.body_block})"
 
 
 class PrintNode:

@@ -47,13 +47,21 @@ struct NumberNode : public ASTNode {
     double number; 
 
     NumberNode(double number) : number(number) {}
-}; 
+
+    std::string toString() const override {
+        return "Number(" + std::to_string(number) + ")";
+    }
+ }; 
 
 
 struct IdentifierNode : public ASTNode {
     std::string identifier; 
 
     IdentifierNode(const std::string& identifier) : identifier(identifier) {}
+
+    std::string toString() const override {
+        return "Identifier(" + identifier + ")";
+    }
 };
 
 
@@ -63,6 +71,10 @@ struct AssignNode : public ASTNode {
 
     AssignNode(const std::string& var_name, std::unique_ptr<ASTNode> expression)
         : var_name(var_name), expression(std::move(expression)) {}
+
+    std::string toString() const override {
+        return "Assign(" + var_name + ", " +  expression->toString() + ")";
+    }
 };
 
 
@@ -71,6 +83,15 @@ struct BlockNode: public ASTNode {
 
     BlockNode(std::vector<std::unique_ptr<ASTNode>> statements) 
         : statements(std::move(statements)) {}
+
+    std::string toString() const override {
+
+        std::string statement;
+        for (const auto& ptr : statements) {
+            statement += ptr->toString();
+        }
+        return "Block(" + statement + ")";
+    }
 };
 
 
@@ -85,6 +106,12 @@ struct ConditionalNode: public ASTNode {
         : condition(std::move(condition)),
           then_block(std::move(then_block)),
           else_block(std::move(else_block)) {}
+
+    std::string toString() const override {
+        return "Conditional(" + condition->toString() + ","
+                + then_block->toString() + ","
+                + (else_block ? else_block->toString() : "None ") + ")";
+        }
 };
 
 
@@ -96,6 +123,11 @@ struct WhileNode: public ASTNode {
               std::unique_ptr<ASTNode> body_block )
         : condition(std::move(condition)), 
           body_block(std::move(body_block)) {}
+
+    std::string toString() const override {
+        return "While(" + condition->toString() + ","
+                        + body_block->toString() + ")";
+    }
 };
 
 
@@ -104,7 +136,11 @@ struct PrintNode: public ASTNode {
 
     PrintNode(std::unique_ptr<ASTNode> expression) 
         : expression(std::move(expression)) {}
-};
+
+    std::string toString() const override {
+        return "Print(" + expression->toString() + ")";
+    }
+ };
 
 
 struct ProgramNode: public ASTNode {
@@ -112,4 +148,13 @@ struct ProgramNode: public ASTNode {
 
     ProgramNode(std::vector<std::unique_ptr<ASTNode>> statements) 
         : statements(std::move(statements)) {}
+
+    std::string toString() const override {
+        std::string statement;
+
+        for (const auto& ptr : statements) {
+            statement += ptr->toString();
+        }
+        return "Program(" + statement + ")";
+    }
 };
