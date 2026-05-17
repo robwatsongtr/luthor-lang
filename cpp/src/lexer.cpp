@@ -1,10 +1,5 @@
 #include "lexer.h"
-#include "tokens.h"
 
-#include <optional>
-#include <unordered_map>
-#include <string>
-#include <vector>
 #include <stdexcept>
 #include <cctype>
 #include <sstream>
