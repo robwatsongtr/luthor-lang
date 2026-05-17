@@ -43,6 +43,7 @@ class Parser:
 
         token = self.token_peek() 
 
+        # actual check for the grammar validaion 
         if token.token_type == expected_token:
             self.advance()
 
