@@ -49,3 +49,38 @@ Token Parser::consume(TokenType expected_token) {
         throw std::runtime_error(oss.str());
     }
 }
+
+std::unique_ptr<ASTNode> Parser::program() {
+    std::vector<std::unique_ptr<ASTNode>> statements;
+
+    while (token_peek()) {
+        auto stmnt = statement();
+        statements.push_back(std::move(stmnt));
+    }
+
+    //  make_unique → new → malloc → OS
+    auto program = std::make_unique<ProgramNode>(
+        std::move(statements)
+    );
+
+    return program;
+}
+
+std::unique_ptr<ASTNode> Parser::statement() {
+    switch (token_peek().value().token_type) {
+        case TokenType::KNOW:
+            return assignment();
+
+        case TokenType::SUPPOSE:
+            return conditional();
+
+        case TokenType::DOOM:
+            return print_statement();
+
+        case TokenType::CRIME:
+            return while_statement();
+
+        default:
+            return expression();     
+    };
+}
