@@ -81,6 +81,6 @@ std::unique_ptr<ASTNode> Parser::statement() {
             return while_statement();
 
         default:
-            return expression();     
+            return expression();
     };
 }
