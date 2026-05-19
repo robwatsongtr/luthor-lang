@@ -1,6 +1,6 @@
 # Luthor Language
 
-A simple, Turing-complete interpreted programming language with Lex Luthor-themed keywords. Built in Python as a learning project to understand lexing, parsing, AST construction, and interpretation.
+An interpreted programming language in C++ with Lex Luthor-themed keywords. 
 
 > *The name is a pun on "lexer"*
 
@@ -13,12 +13,6 @@ A simple, Turing-complete interpreted programming language with Lex Luthor-theme
 - **Conditionals** — `suppose`/`otherwise`/`end`
 - **Loops** — `crime` (while loops)
 - **Output** — `doom` (print)
-
-## Quick Start
-
-```python
-python3 main.py
-```
 
 ## Example Programs
 
@@ -87,14 +81,4 @@ Output: `> 0.0` `> 1.0` `> 2.0` `> 3.0` `> 4.0`
 - Expressions use standard precedence (multiplication before addition, etc.)
 - Variables are dynamically typed (currently only numbers)
 - Whitespace is mostly ignored (except newlines vs spaces)
-
-## Architecture
-
-**Pipeline:** `source → Lexer → tokens → Parser → AST → Interpreter → output`
-
-- **Lexer** (`src/lexer.py`) — tokenizes source text
-- **Parser** (`src/parser.py`) — recursive descent parser, builds AST
-- **Interpreter** (`src/interpreter.py`) — tree-walking interpreter with symbol table
-- **Nodes** (`src/nodes.py`) — AST node definitions
-- **Tokens** (`src/tokens.py`) — token types and definitions
 
