@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include <algorithm>
 
 class Parser {
 public:
@@ -37,5 +38,11 @@ private:
     std::unique_ptr<ASTNode> factor();
     std::unique_ptr<ASTNode> unary();
     std::unique_ptr<ASTNode> primary();
+
+    // helper class to check if something is in a sequence container 
+    template<typename Container, typename T>
+        bool contains(const Container& c, const T& value) {
+        return std::find(c.begin(), c.end(), value) != c.end();
+    }
 };
 
