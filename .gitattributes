@@ -1,0 +1,3 @@
+* linguist-detectable=false
+src/* linguist-detectable=true
+src/* linguist-language=C++
