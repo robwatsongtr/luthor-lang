@@ -1,7 +1,11 @@
 # Luthor Language — Project Context
 
 ## Overview
-Luthor is a custom interpreted programming language built in Python as a learning project. The goal is to understand the core source-to-output pipeline: lexing, parsing, AST construction, and tree-walking interpretation. Keywords are themed after Lex Luthor, inspired by the fact that a core language component is called a *lexer*.
+Luthor is a custom interpreted programming language initially built in Python as a learning project. 
+
+Currently about 70-80 percent done as a rewrite in C++. 
+
+The goal is to understand the core source-to-output pipeline: lexing, parsing, AST construction, and tree-walking interpretation. Keywords are themed after Lex Luthor, inspired by the fact that a core language component is called a *lexer*.
 
 AGENTS / LLM : DO NOT GIVE CODE, JUST GUIDANCE LIKE A TEACHER.
 
@@ -108,21 +112,6 @@ primary              → NUMBER | IDENTIFIER | '(' expression ')'
 
 ---
 
-## Completed Implementation ✓
-
-**The interpreter is fully functional and Turing complete.** All core features have been implemented:
-
-1. ~~**Extend `primary`** to handle `IDENTIFIER` tokens → needs `IdentifierNode`~~ ✓
-2. ~~**Add `comparison` method** to parser, update `expression` to call it~~ ✓
-3. ~~**Add `AssignNode`**, implement `assignment` parser method~~ ✓
-4. ~~**Add `BlockNode`**, implement `block` parser method~~ ✓
-5. ~~**Add `ConditionalNode`**, implement `conditional` parser method~~ ✓
-6. ~~**Add `PrintNode`**, add `DOOM` keyword/token, implement `print_statement`~~ ✓
-7. ~~**Add `statement` and `program` methods** to parser~~ ✓
-8. ~~**Add symbol table** (plain dict) to interpreter for variable state~~ ✓
-9. ~~**Extend interpreter** with isinstance branches for all new node types~~ ✓
-10. ~~**Add `WhileNode` and `crime` keyword for looping**~~ ✓
-11. ~~**Add `UnaryOpNode`, `unary()` parser method, and `unary_op_map` for unary negation**~~ ✓
 
 ### Current Capabilities
 
@@ -139,7 +128,6 @@ The language now supports:
 
 **The language is Turing complete** — with variables, conditionals, and loops, it can compute any computable function.
 
-**Total implementation: ~500 lines of Python**
 
 ### Example Programs
 
@@ -189,4 +177,4 @@ Potential enhancements for further learning:
 - `=` alone is not currently a token (assignment uses `know`, no `=` needed)
 - Interpreter currently uses `isinstance` chaining — acceptable for this scale, refactor to visitor pattern before adding a bytecode backend
 - This is intentionally a learning project; scope is kept tight to understand fundamentals before adding complexity
-- Unary negation is supported via the `unary` grammar rule sitting between `factor` and `primary`; the `unary_op_map` pattern allows additional unary operators to be added without modifying the elif branch logic
+- Unary negation is supported via the `unary` grammar rule sitting between `factor` and `primary`; the `unary_op_map` pattern allows additional unary operators to be added. 
