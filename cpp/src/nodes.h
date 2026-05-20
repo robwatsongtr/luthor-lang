@@ -28,6 +28,7 @@ struct UnaryOpNode : public ASTNode {
         return "Unary(" + op_type.lexeme + ", " + operand->toString() + ")";
     }
 
+    // this announces the type to the Visitor 
     void accept(Visitor& v) override { v.visit(*this); }
 };
 
