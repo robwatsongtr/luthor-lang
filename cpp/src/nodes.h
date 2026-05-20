@@ -5,12 +5,15 @@
 #include <vector>
 #include <string>
 
+struct Visitor;
+
 struct ASTNode {
     // virtual on the destructor tells the runtime  "when you destroy 
     // through this base pointer, look up the vtable at runtime to 
     // find the real destructor
     virtual ~ASTNode() = default; 
     virtual std::string toString() const = 0;   
+    virtual void accept(Visitor& v) = 0;
 };
 
 
@@ -24,6 +27,8 @@ struct UnaryOpNode : public ASTNode {
     std::string toString() const override {
         return "Unary(" + op_type.lexeme + ", " + operand->toString() + ")";
     }
+
+    void accept(Visitor& v) override { v.visit(*this); }
 };
 
 
@@ -41,6 +46,8 @@ struct BinaryOpNode : public ASTNode {
                            + left->toString() + ", " 
                            + right->toString() + ")";
     }
+
+    void accept(Visitor& v) override { v.visit(*this); }
 };
 
 struct NumberNode : public ASTNode {
@@ -51,6 +58,8 @@ struct NumberNode : public ASTNode {
     std::string toString() const override {
         return "Number(" + std::to_string(number) + ")";
     }
+
+    void accept(Visitor& v) override { v.visit(*this); }
  }; 
 
 
@@ -62,6 +71,8 @@ struct IdentifierNode : public ASTNode {
     std::string toString() const override {
         return "Identifier(" + identifier + ")";
     }
+
+    void accept(Visitor& v) override { v.visit(*this); }
 };
 
 
@@ -75,6 +86,8 @@ struct AssignNode : public ASTNode {
     std::string toString() const override {
         return "Assign(" + var_name + ", " +  expression->toString() + ")";
     }
+
+    void accept(Visitor& v) override { v.visit(*this); }
 };
 
 
@@ -84,7 +97,7 @@ struct BlockNode: public ASTNode {
     BlockNode(std::vector<std::unique_ptr<ASTNode>> statements) 
         : statements(std::move(statements)) {}
 
-    std::string toString() const override {
+    std::string toString() override {
 
         std::string statement;
         for (const auto& ptr : statements) {
@@ -92,6 +105,8 @@ struct BlockNode: public ASTNode {
         }
         return "Block(" + statement + ")";
     }
+
+    void accept(Visitor& v) override { v.visit(*this); }
 };
 
 
@@ -112,6 +127,8 @@ struct ConditionalNode: public ASTNode {
                 + then_block->toString() + ","
                 + (else_block ? else_block->toString() : "None ") + ")";
         }
+
+    void accept(Visitor& v) override { v.visit(*this); }
 };
 
 
@@ -128,6 +145,8 @@ struct WhileNode: public ASTNode {
         return "While(" + condition->toString() + ","
                         + body_block->toString() + ")";
     }
+
+    void accept(Visitor& v) override { v.visit(*this); }
 };
 
 
@@ -140,6 +159,8 @@ struct PrintNode: public ASTNode {
     std::string toString() const override {
         return "Print(" + expression->toString() + ")";
     }
+
+    void accept(Visitor& v) override { v.visit(*this); }
  };
 
 
@@ -157,4 +178,21 @@ struct ProgramNode: public ASTNode {
         }
         return "Program(" + statement + ")";
     }
+
+    void accept(Visitor& v) override { v.visit(*this); }
 };
+
+  struct Visitor {  
+    virtual void visit(UnaryOpNode& node) = 0;      
+    virtual void visit(BinaryOpNode& node) = 0;                                                                                                                    
+    virtual void visit(NumberNode& node) = 0;
+    virtual void visit(IdentifierNode& node) = 0;
+    virtual void visit(AssignNode& node) = 0;
+    virtual void visit(BlockNode& node) = 0;
+    virtual void visit(ConditionalNode& node) = 0;
+    virtual void visit(WhileNode& node) = 0;
+    virtual void visit(PrintNode& node) = 0;
+    virtual void visit(ProgramNode& node) = 0;
+                                                                                                    
+    virtual ~Visitor() = default;                                                                                                         
+  }; 
