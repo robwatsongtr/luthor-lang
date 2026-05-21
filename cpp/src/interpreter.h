@@ -21,5 +21,13 @@ private:
 
     void visit(UnaryOpNode&);
     void visit(BinaryOpNode&);
-
+    void visit(NumberNode&);
+    void visit(IdentifierNode&);
+    void visit(AssignNode&);
+    void visit(BlockNode&);
+    void visit(ConditionallNode&);
+    void visit(WhileNode&);
+    void visit(PrintNode&);
+    void visit(ProgramNode&);
+    
 };
