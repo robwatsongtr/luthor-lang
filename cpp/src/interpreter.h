@@ -6,12 +6,9 @@
 
 class Interpreter: public Visitor {
 public:
-    Interpreter(std::unique_ptr<ProgramNode> program);   
-
-    void run();
+    Interpreter();
 
 private:
-    std::unique_ptr<ProgramNode> program; 
     std::variant<double, std::string> result; 
 
     std::unordered_map<
@@ -25,7 +22,7 @@ private:
     void visit(IdentifierNode&);
     void visit(AssignNode&);
     void visit(BlockNode&);
-    void visit(ConditionallNode&);
+    void visit(ConditionalNode&);
     void visit(WhileNode&);
     void visit(PrintNode&);
     void visit(ProgramNode&);
