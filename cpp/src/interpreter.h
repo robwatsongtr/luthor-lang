@@ -3,16 +3,22 @@
 
 #include <variant>
 #include <unordered_map> 
+#include <functional>
 
 class Interpreter: public Visitor {
 public:
     Interpreter();
 
 private:
-    std::variant<double, std::string> result; 
+    std::variant<double, std::string, bool> result; 
 
     std::unordered_map<
-        std::string, std::variant<double, std::string>> symbol_table;  
+        std::string, std::variant<double, std::string, bool>> symbol_table;  
+
+    static const std::unordered_map< 
+        TokenType, 
+        std::function<
+            std::variant<double, bool>(double, double)>> binary_op_map;
 
     void evaluate(ASTNode&); 
 

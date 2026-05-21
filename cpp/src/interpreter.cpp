@@ -15,6 +15,21 @@ Four hops, then the work happens.
 
 Interpreter::Interpreter() {}
 
+const std::unordered_map<
+    TokenType, std::function<std::variant<double, bool>(double, double)>> 
+    Interpreter::binary_op_map = {
+        { TokenType::PLUS, [](double a, double b) { return a + b; } },
+        { TokenType::MINUS, [](double a, double b) { return a - b; } },
+        { TokenType::MULTIPLY, [](double a, double b) { return a * b; } },
+        { TokenType::DIVIDE, [](double a, double b) { return a / b; } },
+        { TokenType::LESS_THAN, [](double a, double b) { return a < b; } },
+        { TokenType::GREATER_THAN, [](double a, double b) { return a > b; } },
+        { TokenType::LESS_THAN_EQUAL, [](double a, double b) { return a <= b; } },
+        { TokenType::GREATER_THAN_EQUAL, [](double a, double b) { return a >= b; }},
+        { TokenType::EQUAL_TO, [](double a, double b) { return a == b; } },
+        { TokenType::NOT_EQUAL, [](double a, double b) { return a != b; } },
+    };
+
 // Entry point ------------------------------
 
 void Interpreter::evaluate(ASTNode& node) {
@@ -64,5 +79,5 @@ void Interpreter::visit(WhileNode& node) {
 }
 
 void Interpreter::visit(ConditionalNode& node) {
-    
+
 }
