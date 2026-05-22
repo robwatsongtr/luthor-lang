@@ -171,6 +171,6 @@ void Interpreter::visit(ConditionalNode& node) {
     }
 }
 
-void Interpreter::visit(ProgramNode& node) {
+void Interpreter::visit(ProgramNode&) {
     throw std::runtime_error("ProgramNode should not be visited directly");
 }
