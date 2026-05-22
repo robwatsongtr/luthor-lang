@@ -18,16 +18,54 @@ Interpreter::Interpreter() {}
 const std::unordered_map<
     TokenType, std::function<std::variant<double, bool>(double, double)>> 
     Interpreter::binary_op_map = {
-        { TokenType::PLUS, [](double a, double b) { return a + b; } },
-        { TokenType::MINUS, [](double a, double b) { return a - b; } },
-        { TokenType::MULTIPLY, [](double a, double b) { return a * b; } },
-        { TokenType::DIVIDE, [](double a, double b) { return a / b; } },
-        { TokenType::LESS_THAN, [](double a, double b) { return a < b; } },
-        { TokenType::GREATER_THAN, [](double a, double b) { return a > b; } },
-        { TokenType::LESS_THAN_EQUAL, [](double a, double b) { return a <= b; } },
-        { TokenType::GREATER_THAN_EQUAL, [](double a, double b) { return a >= b; }},
-        { TokenType::EQUAL_TO, [](double a, double b) { return a == b; } },
-        { TokenType::NOT_EQUAL, [](double a, double b) { return a != b; } },
+        { TokenType::PLUS, 
+            [](double a, double b) { 
+                return std::variant<double, bool>{a + b}; 
+        }},
+        { TokenType::MINUS, 
+            [](double a, double b) { 
+                return std::variant<double, bool>{a - b}; 
+        }},
+        { TokenType::MULTIPLY, 
+            [](double a, double b) { 
+                return std::variant<double, bool>{a * b}; 
+        }},
+        { TokenType::DIVIDE, 
+            [](double a, double b) { 
+                return std::variant<double, bool>{a / b}; 
+        }},
+        { TokenType::LESS_THAN, 
+            [](double a, double b) { 
+                return std::variant<double, bool>{a < b}; 
+        }},
+        { TokenType::GREATER_THAN, 
+            [](double a, double b) { 
+                return std::variant<double, bool>{a > b}; 
+        }},
+        { TokenType::LESS_THAN_EQUAL, 
+            [](double a, double b) { 
+                return std::variant<double, bool>{a <= b}; 
+        }},
+        { TokenType::GREATER_THAN_EQUAL, 
+            [](double a, double b) { 
+                return std::variant<double, bool>{a >= b}; 
+        }},
+        { TokenType::EQUAL_TO, 
+            [](double a, double b) { 
+                return std::variant<double, bool>{a == b}; 
+        }},
+        { TokenType::NOT_EQUAL, 
+            [](double a, double b) { 
+                return std::variant<double, bool>{a != b}; 
+        }},
+    };
+
+const std::unordered_map<
+    TokenType, std::function<std::variant<double, bool>(double)>> 
+    Interpreter::unary_op_map = {
+        { TokenType::MINUS, 
+            [](double a) { return std::variant<double, bool>{ -a }; 
+        }}
     };
 
 // Entry point ------------------------------
@@ -55,10 +93,21 @@ void Interpreter::visit(IdentifierNode& node) {
 }
 
 void Interpreter::visit(BinaryOpNode& node) {
+    evaluate(*node.left);
+    auto left = result;
 
+    evaluate(*node.right);
+    auto right = result;
+
+    // need .at() because map is const, need std::get for variant
+    result = binary_op_map.at(node.op_type.token_type)(                                                                                                                                                         
+      std::get<double>(left), std::get<double>(right)                                                                                                                                                         
+    );
+    
 }
 
 void Interpreter::visit(UnaryOpNode& node) {
+
 
 }
 

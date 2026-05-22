@@ -16,8 +16,8 @@ public:
     std::vector<Token> tokenize();
 
 private:
-    int pos;
     std::string stream;
+    size_t pos;
 
     static const std::unordered_map<char, TokenType> single_char_map;
     static const std::vector<char> multi_start; 

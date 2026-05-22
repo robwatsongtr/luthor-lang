@@ -5,7 +5,7 @@
 
 
 Parser::Parser(const std::vector<Token>& tok_stream) : 
-    tok_stream(tok_stream), tok_pos(0) {}
+    tok_pos(0), tok_stream(tok_stream) {}
 
 const std::vector<TokenType> Parser::comparison_tokens = {
     TokenType::LESS_THAN,

@@ -4,7 +4,7 @@
 #include <cctype>
 #include <sstream>
 
-Lexer::Lexer(std::string stream) : stream(stream), pos(0) {}
+Lexer::Lexer(std::string stream) : stream(std::move(stream)), pos(0) {}
 
 const std::unordered_map<char, TokenType> Lexer::single_char_map = {
     { '+', TokenType::PLUS },
