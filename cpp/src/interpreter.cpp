@@ -1,4 +1,9 @@
 #include "interpreter.h"
+#include "nodes.h"
+#include <stdexcept>
+#include <iostream>
+#include <string>
+#include <variant>
 #include <stdexcept>
 
 /*
@@ -107,26 +112,65 @@ void Interpreter::visit(BinaryOpNode& node) {
 }
 
 void Interpreter::visit(UnaryOpNode& node) {
+    evaluate(*node.operand);
+    auto operand = result;
 
-
+    result = unary_op_map.at(node.op_type.token_type)(
+        std::get<double>(operand)
+    );
 }
 
 void Interpreter::visit(AssignNode& node) {
+    auto v_name = node.var_name;
+    evaluate(*node.expression);
+    auto expr = result; 
 
+    symbol_table[v_name] = expr; 
 }
 
 void Interpreter::visit(PrintNode& node) {
+    evaluate(*node.expression);
+    auto expr_eval = result; 
 
+    if (auto* d = std::get_if<double>(&expr_eval)) {    
+        std::cout << "> " << *d << "\n";        
+    } else if (auto* b = std::get_if<bool>(&expr_eval)) {  
+        std::cout << "> " << (*b ? "True" : "False") << "\n";                                                                                                                                                                      
+    }        
 }
 
 void Interpreter::visit(BlockNode& node) {
-
+    for (const auto& stmt : node.statements) {
+        evaluate(*stmt);
+    }
 }
 
 void Interpreter::visit(WhileNode& node) {
+    evaluate(*node.condition);
+    auto cond = std::get<bool>(result);
 
+    while (cond)  {
+        evaluate(*node.body_block);
+
+         // re-evaluate the starting conditon on each iteration 
+        evaluate(*node.condition);
+        cond = std::get<bool>(result);
+    }
 }
 
 void Interpreter::visit(ConditionalNode& node) {
+    evaluate(*node.condition);
+    auto cond = std::get<bool>(result);
 
+    if (cond) {
+        evaluate(*node.then_block);
+    } else {
+        if (node.else_block) {
+            evaluate(*node.else_block);
+        }
+    }
+}
+
+void Interpreter::visit(ProgramNode& node) {
+    throw std::runtime_error("ProgramNode should not be visited directly");
 }
