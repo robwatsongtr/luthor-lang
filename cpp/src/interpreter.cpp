@@ -92,7 +92,7 @@ void Interpreter::visit(IdentifierNode& node) {
     if (it != symbol_table.end()) {
         result = it->second; 
     } else {
-        throw std::runtime_error("ERROR: " 
+        throw std::runtime_error("ERROR: Identifier " 
             + node.identifier + " does not exist. ");
     }
 }

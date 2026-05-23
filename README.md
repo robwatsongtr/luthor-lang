@@ -80,6 +80,21 @@ end
 ```
 Output: `> 0` `> 1` `> 1` `> 2` `> 3` `> 5` `> 8` `> 13` `> 21` `> 34`
 
+## Building and Running
+
+**Build** (requires `make` and `clang++`):
+```
+cd cpp
+make
+```
+
+**Run**:
+```
+./luthor source.lut
+```
+
+Source files use the `.lut` extension by convention — the interpreter doesn't enforce it.
+
 ## Language Reference
 
 ### Keywords
