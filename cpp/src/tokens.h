@@ -38,4 +38,10 @@ enum class TokenType {
 struct Token {
     std::string lexeme;
     TokenType token_type;
+
+    std::string toString() const  {
+       return "Token("  
+            + std::to_string(static_cast<int>(token_type)) 
+            + ", " + lexeme + ")";   
+    }
 };

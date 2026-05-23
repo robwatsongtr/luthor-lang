@@ -12,7 +12,7 @@ public:
     Parser(const std::vector<Token>& tok_stream);
 
     // kicks off the parsing 
-    std::unique_ptr<ASTNode> program();
+    std::unique_ptr<ProgramNode> program();
 
 private:
     int tok_pos; 

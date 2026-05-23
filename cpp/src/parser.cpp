@@ -1,4 +1,5 @@
 #include "parser.h"
+#include "nodes.h"
 
 #include <stdexcept>
 #include <sstream>
@@ -50,7 +51,7 @@ Token Parser::consume(TokenType expected_token) {
     }
 }
 
-std::unique_ptr<ASTNode> Parser::program() {
+std::unique_ptr<ProgramNode> Parser::program() {
     std::vector<std::unique_ptr<ASTNode>> statements;
 
     while (token_peek()) {
