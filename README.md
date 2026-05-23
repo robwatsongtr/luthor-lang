@@ -82,3 +82,6 @@ Output: `> 0.0` `> 1.0` `> 2.0` `> 3.0` `> 4.0`
 - Variables are dynamically typed (currently only numbers)
 - Whitespace is mostly ignored (except newlines vs spaces)
 
+
+Essentially all hand-coded: LLM's used for guidance and teaching,
+a tedious switch statement, and moving the accept methods out of the nodes. 

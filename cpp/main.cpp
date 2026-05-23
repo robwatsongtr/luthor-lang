@@ -16,22 +16,25 @@ Example, to pass in an Interpreter as a visitor:
 */
 
 int main () {
-    std::string source1 =  R"(                                                                                                                  
-        know x 3
-        suppose x > 5                                                                                                                         
-            doom 100                                                                                                                          
-        end
-        otherwise                                                                                                                             
-            doom 200     
-        end
+    std::string fib =  R"(                                                                                                                  
+        know i 0                                                                                                                                  
+        know a 0
+        know b 1                                                                                                                                  
+        crime i < 10    
+            doom a                                                                                                                                
+            know temp b 
+            know b a + b                                                                                                                          
+            know a temp
+            know i i + 1                                                                                                                          
+        end         
     )";
 
-    std::cout << "Program: " << source1 << "\n";
+    std::cout << "Program: " << fib << "\n";
     std::cout << "\n"; 
 
     std::cout << "Step 1: Lexical Analysis (Tokenization)"<< "\n";
     std::cout << "\n";
-    Lexer lexer(source1); 
+    Lexer lexer(fib); 
     auto tokens = lexer.tokenize();
 
     for (auto tok : tokens) {
