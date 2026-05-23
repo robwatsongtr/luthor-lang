@@ -9,10 +9,8 @@
 
 class Parser {
 public:
-    // constructor definition 
     Parser(const std::vector<Token>& tok_stream);
 
-    // kicks off the parsing 
     std::unique_ptr<ProgramNode> program();
 
 private:

@@ -149,7 +149,7 @@ void Interpreter::visit(WhileNode& node) {
     evaluate(*node.condition);
     auto cond = std::get<bool>(result);
 
-    while (cond)  {
+    while (cond) {
         evaluate(*node.body_block);
 
          // re-evaluate the starting conditon on each iteration 

@@ -9,10 +9,8 @@
 
 class Lexer {
 public:
-    // constructor definition 
     Lexer(std::string stream);
 
-    // class returns a vector of tokens 
     std::vector<Token> tokenize();
 
 private:
