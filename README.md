@@ -60,6 +60,21 @@ end
 ```
 Output: `> 0.0` `> 1.0` `> 2.0` `> 3.0` `> 4.0`
 
+### Fibonacci Sequence
+```
+know i 0
+know a 0
+know b 1
+crime i < 10
+    doom a
+    know temp b
+    know b a + b
+    know a temp
+    know i i + 1
+end
+```
+Output: `> 0` `> 1` `> 1` `> 2` `> 3` `> 5` `> 8` `> 13` `> 21` `> 34`
+
 ## Language Reference
 
 ### Keywords
