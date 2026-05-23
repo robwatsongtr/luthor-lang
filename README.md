@@ -2,6 +2,9 @@
 
 An interpreted programming language in C++ with Lex Luthor-themed keywords. 
 
+Features full pipeline: lexer, recursive descent parser, then a runner that
+runs an interpreter as a visitor. 
+
 > *The name is a pun on "lexer"*
 
 ## Features
