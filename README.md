@@ -2,8 +2,7 @@
 
 An interpreted programming language with Lex Luthor-themed keywords. 
 
-Featurea a lexer, recursive descent parser, symbol table, 
-then a runner that runs an interpreter as a visitor dispatch.
+Features a a lexer, recursive descent parser, symbol table and interpreter that runs as a visitor dispatch.
 ...all in a bit over 1k lines of C++.
 
 Compact, readable, not over-engineered. 
