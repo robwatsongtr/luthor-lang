@@ -1,6 +1,6 @@
 # Luthor Language
 
-An interpreted programming language in C++ with Lex Luthor-themed keywords. 
+An interpreted programming language with Lex Luthor-themed keywords. 
 
 Featurea a lexer, recursive descent parser, symbol table, 
 then a runner that runs an interpreter as a visitor dispatch.
