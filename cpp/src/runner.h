@@ -1,14 +1,5 @@
 #pragma once 
-#include "interpreter.h"
-
-/*
-Example, to pass in an Interpreter as a visitor:
-                                                                                                            
-  Interpreter interp;                                                                                                                       
-  Runner runner(std::move(program));                                                                                                      
-  runner.run(interp);
-
-*/
+#include "nodes.h"
 
 class Runner {
 public:

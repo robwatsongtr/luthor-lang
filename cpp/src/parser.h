@@ -2,6 +2,7 @@
 #include "tokens.h"
 #include "nodes.h"
 
+#include <cstddef>
 #include <vector>
 #include <optional>
 #include <algorithm>
@@ -15,7 +16,7 @@ public:
     std::unique_ptr<ProgramNode> program();
 
 private:
-    int tok_pos; 
+    size_t tok_pos; 
     const std::vector<Token>& tok_stream; 
     static const std::vector<TokenType> comparison_tokens;
 

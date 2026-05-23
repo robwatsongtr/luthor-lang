@@ -6,6 +6,15 @@
 #include <string> 
 #include <iostream>
 
+/*
+Example, to pass in an Interpreter as a visitor:
+                                                                                                            
+  Interpreter interp;                                                                                                                       
+  Runner runner(std::move(program));                                                                                                      
+  runner.run(interp);
+
+*/
+
 int main () {
     std::string source1 =  R"(                                                                                                                  
         know x 3
