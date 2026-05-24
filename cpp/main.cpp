@@ -69,16 +69,4 @@ int main (int argc, char* argv[]) {
 }
 
 
- // std::string fib =  R"(                                                                                                                  
-    //     know i 0                                                                                                                                  
-    //     know a 0
-    //     know b 1                                                                                                                                  
-    //     crime i < 10    
-    //         doom a                                                                                                                                
-    //         know temp b 
-    //         know b a + b                                                                                                                          
-    //         know a temp
-    //         know i i + 1                                                                                                                          
-    //     end         
-    // )";
-
+ 
