@@ -107,6 +107,7 @@ std::unique_ptr<ASTNode> Parser::conditional() {
     auto then_block = block(); 
     std::unique_ptr<ASTNode> else_block = nullptr;
 
+    // check for else block first 
     if (token_peek() 
         && token_peek().value().token_type == TokenType::OTHERWISE) {
 
@@ -164,7 +165,6 @@ std::unique_ptr<ASTNode> Parser::block() {
 
     return root; 
 }
-
 
 // Expression methods ---------------------------------------
 
@@ -233,6 +233,7 @@ std::unique_ptr<ASTNode> Parser::unary() {
         auto op = token_peek().value();
         consume(op.token_type);
         auto operand = primary();
+
         auto root = std::make_unique<UnaryOpNode>(
             op, std::move(operand)
         );
@@ -271,6 +272,5 @@ std::unique_ptr<ASTNode> Parser::primary() {
         oss << "Unexpected token in Primary";    
         throw std::runtime_error(oss.str());
 
-    }
-    
+    }  
 }

@@ -107,8 +107,7 @@ void Interpreter::visit(BinaryOpNode& node) {
     // need .at() because map is const, need std::get for variant
     result = binary_op_map.at(node.op_type.token_type)(                                                                                                                                                         
       std::get<double>(left), std::get<double>(right)                                                                                                                                                         
-    );
-    
+    );  
 }
 
 void Interpreter::visit(UnaryOpNode& node) {
