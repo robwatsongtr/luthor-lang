@@ -1,5 +1,5 @@
 # Luthor Language
 
-See [docs/luthor_project.md](docs/luthor_project.md) for full project context.
+@docs/luthor_project.md
 
 Do not give code — provide guidance like a teacher.
