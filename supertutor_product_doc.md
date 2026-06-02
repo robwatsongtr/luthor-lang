@@ -106,12 +106,63 @@ The Python pass teaches concepts without fighting the language. The C++ pass mak
 - Every piece must work or nothing works — can't fake understanding
 - Natural, exciting extension paths exist (functions, bytecode VM) without being required
 
-**Existing curriculum artifacts (from the Luthor build):**
-- `luthor_project.md` — full architecture, design decisions, component breakdown
+---
+
+### Phase 1: Python Implementation
+
+The Python version establishes the full pipeline using `isinstance`-based dispatch. Each component maps directly to a file:
+
+**Tokens** — `PLUS`, `MINUS`, `MULTIPLY`, `DIVIDE`, `L_PARENS`, `R_PARENS`, comparison operators, `NUMBER`, `IDENTIFIER`, keywords (`KNOW`, `SUPPOSE`, `OTHERWISE`, `END`, `DOOM`, `CRIME`), `EOF`
+
+**Lexer** — character-by-character traversal with `peek`/`peek_next` state transition; single-char map, multi-char comparison tokens, keyword map with `IDENTIFIER` fallback, numeric literals
+
+**Parser** — recursive descent with explicit precedence chain:
+```
+expression → comparison → term → factor → unary → primary
+```
+Statement dispatcher routes to `assignment`, `conditional`, `while_statement`, `print_statement`, or `expression`. `block()` collects until `END`. `consume()` validates and advances in one step.
+
+**Nodes** — `ProgramNode`, `BlockNode`, `AssignNode`, `ConditionalNode`, `WhileNode`, `PrintNode`, `BinaryOpNode`, `UnaryOpNode`, `NumberNode`, `IdentifierNode`
+
+**Interpreter** — tree walker using `isinstance` dispatch. `symbol_table` as plain dict. `binary_op_map` and `unary_op_map` mapping `TokenType` to Python operator functions. `run()` loops statements, `evaluate()` dispatches on node type recursively.
+
+---
+
+### Phase 2: C++ Rewrite
+
+Same architecture, same project, everything Python was hiding becomes explicit:
+
+**New concepts introduced:**
+- `std::unique_ptr<ASTNode>` — heap allocation, RAII, ownership semantics, move semantics
+- `std::variant<double, bool>` — explicit type representation for runtime values
+- `enum class TokenType` — scoped enums
+- Virtual dispatch and vtables — `accept(Visitor&)` on every node
+- Visitor pattern with double dispatch — compiler enforces completeness, no silent failures
+- `static const` maps initialized with lambdas
+- `Runner` class separating traversal control from evaluation logic
+- Makefile and clang++ build toolchain
+
+**The critical pedagogical difference:**
+
+Python uses an `isinstance` chain in `evaluate()`. C++ uses the visitor pattern with double dispatch:
+```
+evaluate(node)
+  → node.accept(*this)           // dispatch 1: vtable on node
+    → v.visit(*this)
+      → Interpreter::visit(ConcreteType&)   // dispatch 2: overload on concrete type
+```
+The visitor pattern enforces completeness at **compile time** — add a node type without a `visit()` overload and it won't compile. The `isinstance` chain fails silently at runtime. This difference is felt, not just understood.
+
+**This is the "everything clicked" moment.** When the learner rewrites the same lexer, parser, and interpreter they already built in Python, every abstraction Python was providing invisibly becomes concrete. What a string actually is. What ownership means. Why the visitor pattern exists as a solution to a real problem they just felt.
+
+---
+
+### Existing Curriculum Artifacts (from the real build)
+- `luthor_project.md` — full architecture, design decisions, complete component breakdown for both Python and C++
 - `cpp_rewrite_concepts.md` — C++ specific concepts introduced in the rewrite
-- `visitor_pattern.md` — deep dive on the pattern as implemented
-- Python and C++ source as reference implementations
-- CLAUDE.md showing the actual constraint profile used
+- `visitor_pattern.md` — deep dive on the pattern as implemented in this codebase
+- Python and C++ source as reference implementations (~600 and ~1000 lines respectively)
+- `CLAUDE.md` — the actual constraint profile used during the build: `"DO NOT GIVE CODE, JUST GUIDANCE LIKE A TEACHER"`
 
 These are real artifacts from the real build, not reconstructed after the fact.
 
