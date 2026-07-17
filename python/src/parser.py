@@ -30,9 +30,11 @@ class Parser:
         self.tok_pos += 1
 
     def token_peek(self):
-        token = self.tok_stream[self.tok_pos]
-
-        return token if token.token_type != TokenType.EOF else None 
+        if self.tok_pos < len(self.tok_stream):
+            token = self.tok_stream[self.tok_pos]
+            return token if token.token_type != TokenType.EOF else None 
+        else:
+            return None 
 
     def consume(self, expected_token):
         # safe for caller if you don't check for none in caller's method 
@@ -223,11 +225,13 @@ class Parser:
 
             return IdentifierNode(identifier.lexeme)
 
-        else:
-            # handle parens, creating a nested parse of everything inside them
-            if self.token_peek().token_type == TokenType.L_PARENS:
+        elif self.token_peek().token_type == TokenType.L_PARENS:
                 self.consume(TokenType.L_PARENS)
                 result = self.expression()
                 self.consume(TokenType.R_PARENS)
 
                 return result
+            
+        else:                                                                                                                                            
+            raise ValueError(f"Unexpected token '{self.token_peek()}' in primary")
+    
