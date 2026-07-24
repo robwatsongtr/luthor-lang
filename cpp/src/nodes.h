@@ -119,8 +119,8 @@ struct ConditionalNode: public ASTNode {
           else_block(std::move(else_block)) {}
 
     std::string toString() const override {
-        return "Conditional(" + condition->toString() + ","
-                + then_block->toString() + ","
+        return "Conditional(" + condition->toString() + ", "
+                + then_block->toString() + ", "
                 + (else_block ? else_block->toString() : "None ") + ")";
     }
 
@@ -138,7 +138,7 @@ struct WhileNode: public ASTNode {
           body_block(std::move(body_block)) {}
 
     std::string toString() const override {
-        return "While(" + condition->toString() + ","
+        return "While(" + condition->toString() + ", "
                         + body_block->toString() + ")";
     }
 
