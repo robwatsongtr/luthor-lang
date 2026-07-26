@@ -4,6 +4,7 @@
 #include <cctype>
 #include <sstream>
 
+// we std::move the stream to prevent a second copy
 Lexer::Lexer(std::string stream) : stream(std::move(stream)), pos(0) {}
 
 const std::unordered_map<char, TokenType> Lexer::single_char_map = {
@@ -63,10 +64,11 @@ std::vector<Token> Lexer::tokenize() {
             return tokens;
 
         } else if (std::isspace(static_cast<unsigned char>(peek().value()))) {
-            advance(); 
+            advance(); // cast because old C func ^^^ needs to be positive 
 
-        } else if (contains(multi_start, peek().value())
+        } else if ( contains(multi_start, peek().value())
                     && peek_next().value_or('\0') == '=') {
+                                // ^^ safely unwrap optional being empty 
 
             if (peek().value() == '<') {
                 std::string lexeme = "<=";
@@ -93,16 +95,17 @@ std::vector<Token> Lexer::tokenize() {
         } else if ( auto it = single_char_map.find(peek().value()); 
                     it != single_char_map.end() ) {
 
-            auto t_type = it->second;
+            auto t_type = it->second; // iterator is pointer to map 
             auto lexeme = std::string(1, peek().value());
             Token token{ lexeme, t_type };
             tokens.push_back(token);
             advance();
             
         } else if (isalpha(static_cast<unsigned char>(peek().value()))) {
-            std::string word;
+            // keyword or identifier branch: 
+            std::string word; 
            
-            while ( peek().has_value() 
+            while ( peek()
                     && (isalnum(static_cast<unsigned char>(peek().value())) 
                     || peek().value() == '_') ) 
                 {
@@ -122,7 +125,7 @@ std::vector<Token> Lexer::tokenize() {
         } else if (isdigit(static_cast<unsigned char>(peek().value()))) {
             std::string digits;
 
-            while ( peek().has_value() 
+            while ( peek()
                     && isdigit(static_cast<unsigned char>(peek().value())) )  
                 {
                     digits += peek().value();
