@@ -250,21 +250,27 @@ std::unique_ptr<ASTNode> Parser::unary() {
 }
 
 std::unique_ptr<ASTNode> Parser::primary() {
-    if ( token_peek().value().token_type == TokenType::NUMBER ) {
+    if ( token_peek() 
+        && token_peek().value().token_type == TokenType::NUMBER ) {
+    
         auto num = token_peek().value();
         consume(num.token_type);
         auto root = std::make_unique<NumberNode>(std::stod(num.lexeme));
 
         return root;
 
-    } else if ( token_peek().value().token_type == TokenType::IDENTIFIER ) {
+    } else if ( token_peek() 
+                && token_peek().value().token_type == TokenType::IDENTIFIER ) {
+
         auto identifier = token_peek().value();
         consume(identifier.token_type);
         auto root = std::make_unique<IdentifierNode>(identifier.lexeme);
 
         return root; 
         
-    } else if ( token_peek().value().token_type == TokenType::L_PARENS ) {
+    } else if ( token_peek() 
+                &&  token_peek().value().token_type == TokenType::L_PARENS ) {
+
         consume(TokenType::L_PARENS);
         auto root = expression();
         consume(TokenType::R_PARENS);

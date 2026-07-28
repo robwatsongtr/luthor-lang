@@ -25,9 +25,9 @@ private:
     void advance();
     void advance_twice();
     
-    // helper templated class to check if something is in a sequence container 
+    // helper templated function to check if something is in a sequence container 
     template<typename Container, typename T>
-        bool contains(const Container& c, const T& value) {
+    bool contains(const Container& c, const T& value) {
         return std::find(c.begin(), c.end(), value) != c.end();
     }
 
