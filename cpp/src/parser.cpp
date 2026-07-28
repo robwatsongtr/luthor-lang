@@ -22,33 +22,37 @@ void Parser::advance() {
 }
 
 std::optional<Token> Parser::token_peek() {
-    auto token = tok_stream[tok_pos];
-
-    if (token.token_type != TokenType::END_OF_FILE ) {
-        return token; 
-    } else {
-        return std::nullopt; 
+    if (tok_pos >= tok_stream.size() ) {
+        return std::nullopt;
     }
+
+    auto token = tok_stream[tok_pos];
+    if (token.token_type == TokenType::END_OF_FILE ) {
+        return std::nullopt;
+    }
+    return token;
 }
 
+
 Token Parser::consume(TokenType expected_token) {
-    if(!token_peek()) {
+    auto token_get = token_peek();
+    if (!token_get) {
         std::ostringstream oss;
         oss << "Unexpected end of input at " << tok_pos;     
         throw std::runtime_error(oss.str());
-    } 
+    }
 
-    auto token = token_peek().value(); 
+    auto token = token_get.value();
 
-    if (token.token_type == expected_token) {
-        advance();
-        return token;
-    } else {
+    if (token.token_type != expected_token) {
         std::ostringstream oss;
         oss << "Unexpected token '" << token.lexeme 
             << "' at " << tok_pos;      
         throw std::runtime_error(oss.str());
     }
+
+    advance();
+    return token;
 }
 
 std::unique_ptr<ProgramNode> Parser::program() {

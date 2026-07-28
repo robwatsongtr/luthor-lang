@@ -177,7 +177,8 @@ struct ProgramNode: public ASTNode {
     void accept(Visitor& v) override;
 };
 
-
+// a compile time 'catalog' of what exists to visit.
+// every new node needs an entry here.
 struct Visitor {
     virtual void visit(UnaryOpNode& node) = 0;
     virtual void visit(BinaryOpNode& node) = 0;

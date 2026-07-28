@@ -21,8 +21,7 @@ private:
     void advance();
     std::optional<Token> token_peek();
     Token consume(TokenType expected_token);
-
-    // EBNF methods: 
+ 
     std::unique_ptr<ASTNode> statement();
     std::unique_ptr<ASTNode> assignment();
     std::unique_ptr<ASTNode> conditional();
