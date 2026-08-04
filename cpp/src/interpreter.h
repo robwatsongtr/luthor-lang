@@ -12,20 +12,17 @@ public:
 private:
     std::variant<double, bool> result; 
 
-    std::unordered_map<
-        std::string, std::variant<double, bool>> symbol_table;  
+    std::unordered_map<std::string, std::variant<double, bool>> symbol_table;  
 
-    static const std::unordered_map< 
-        TokenType, 
-        std::function<
-            std::variant<double, bool>(double, double)>> binary_op_map;
+    static const std::unordered_map< TokenType, 
+        std::function<std::variant<double, bool>(double, double)>> binary_op_map;
 
-    static const std::unordered_map< 
-        TokenType, 
-        std::function<
-            std::variant<double, bool>(double)>> unary_op_map;
+    static const std::unordered_map< TokenType, 
+        std::function< std::variant<double, bool>(double)>> unary_op_map;
+
+    // need this in case a number ends up as a condition 
+    bool to_bool(const std::variant<double, bool>& comp) const;        
     
-
     void evaluate(ASTNode&); 
 
     void visit(UnaryOpNode&);
@@ -38,5 +35,5 @@ private:
     void visit(WhileNode&);
     void visit(PrintNode&);
     void visit(ProgramNode&);
-    
+   
 };
