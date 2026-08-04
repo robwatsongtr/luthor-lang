@@ -92,7 +92,7 @@ std::vector<Token> Lexer::tokenize() {
                 advance_twice();
             }
 
-        } else if ( auto it = single_char_map.find(peek().value()); 
+        } else if (auto it = single_char_map.find(peek().value()); 
                     it != single_char_map.end() ) {
 
             auto t_type = it->second; // iterator is pointer to map 

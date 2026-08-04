@@ -10,6 +10,7 @@ public:
     Interpreter();
 
 private:
+    // Side channel that gets written and overwritten
     std::variant<double, bool> result; 
 
     std::unordered_map<std::string, std::variant<double, bool>> symbol_table;  

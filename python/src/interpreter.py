@@ -56,6 +56,7 @@ class Interpreter:
             left = self.evaluate(node.left)
             right = self.evaluate(node.right)
 
+            # The map lookup returns a callable, and the () right after invokes it.    
             return self.binary_op_map[node.op_type.token_type](left, right)
         
         elif isinstance(node, UnaryOpNode):

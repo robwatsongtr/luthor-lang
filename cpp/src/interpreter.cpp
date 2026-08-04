@@ -87,9 +87,9 @@ void Interpreter::visit(NumberNode& node) {
 }
 
 void Interpreter::visit(IdentifierNode& node) {
-    auto it = symbol_table.find(node.identifier);
-
-    if (it != symbol_table.end()) {
+    if ( auto it = symbol_table.find(node.identifier); 
+        it != symbol_table.end()) 
+    {
         result = it->second; 
     } else {
         throw std::runtime_error("ERROR: Identifier " 
@@ -104,7 +104,8 @@ void Interpreter::visit(BinaryOpNode& node) {
     evaluate(*node.right);
     auto right = result;
 
-    // need .at() because map is const, need std::get for variant
+    // The map lookup returns a callable, and the () right after invokes it.    
+    // need .at() because map is const
     result = binary_op_map.at(node.op_type.token_type)(                                                                                                                                                         
       std::get<double>(left), std::get<double>(right)                                                                                                                                                         
     );  
@@ -146,20 +147,19 @@ void Interpreter::visit(BlockNode& node) {
 
 void Interpreter::visit(WhileNode& node) {
     evaluate(*node.condition);
-    auto cond = std::get<bool>(result);
+    auto cond = to_bool(result);
 
     while (cond) {
         evaluate(*node.body_block);
-
-         // re-evaluate the starting conditon on each iteration 
+        // re-evaluate the starting conditon on each iteration 
         evaluate(*node.condition);
-        cond = std::get<bool>(result);
+        cond = to_bool(result);
     }
 }
 
 void Interpreter::visit(ConditionalNode& node) {
     evaluate(*node.condition);
-    auto cond = std::get<bool>(result);
+    auto cond = to_bool(result);
 
     if (cond) {
         evaluate(*node.then_block);
